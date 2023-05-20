@@ -1,7 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { AddTask, AddTaskLabel, Container } from './styles';
 import { useNavigation } from '@react-navigation/native';
-import Label from '@components/Label';
 import { useTask } from '@hooks/task';
 import Task from '@components/Task';
 import { ScrollView } from 'react-native';
