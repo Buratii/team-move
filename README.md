@@ -1,4 +1,4 @@
-# Expo Project
+# Team Move
 
 This is a simple Expo project created using the Expo CLI.
 
