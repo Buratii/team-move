@@ -1,3 +1,4 @@
+import { sortTasks } from '@helpers/sortTasks';
 import { Checklist, Task } from '@interfaces/task.interface';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -44,18 +45,7 @@ function TaskProvider({ children }: TaskProviderProps) {
       const savedTasks = await AsyncStorage.getItem('@tasks');
       if (savedTasks) {
         const parsedTasks = JSON.parse(savedTasks);
-
-        const sortedTasks = parsedTasks.sort((a: Task, b: Task) => {
-          if (a.status === 'incomplete' && b.status === 'complete') {
-            return -1;
-          }
-          if (a.status === 'complete' && b.status === 'incomplete') {
-            return 1;
-          }
-
-          return new Date(a.date) - new Date(b.date);
-        });
-
+        const sortedTasks = sortTasks(parsedTasks);
         setTasks(sortedTasks);
       }
     } catch (error) {
@@ -64,7 +54,9 @@ function TaskProvider({ children }: TaskProviderProps) {
   };
 
   const addTask = (task: Task) => {
-    setTasks([...tasks, task]);
+    const updatedTasks = [...tasks, task];
+    const sortedTasks = sortTasks(updatedTasks);
+    setTasks(sortedTasks);
   };
 
   const updateChecklist = (index: number, updatedChecklist: Checklist[]) => {
@@ -77,7 +69,9 @@ function TaskProvider({ children }: TaskProviderProps) {
       updatedTasks[index].status = 'complete';
     }
 
-    setTasks(updatedTasks);
+    const sortedTasks = sortTasks(updatedTasks);
+
+    setTasks(sortedTasks);
   };
 
   return (
